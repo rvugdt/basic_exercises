@@ -5,6 +5,40 @@
 # Маша: 2
 # Петя: 2
 
+def gender_count(school: list, is_male: dict) -> dict:
+    class_data = {}
+    for klass in school:
+        class_name = klass['class']
+        students = klass['students']
+        girls_count = 0
+        boys_count = 0
+        for student in students:
+            first_name = student['first_name']
+            if first_name in is_male and is_male[first_name]:
+                boys_count+=1
+            elif first_name in is_male and not is_male[first_name]:
+                girls_count+=1
+        class_data[class_name]={'девочек': girls_count, 'мальчиков': boys_count}
+    return class_data
+
+def name_retries(students: list) -> dict:
+    name_counts = {}
+
+    for student in students:
+        name = student['first_name']
+        if name in name_counts:
+            name_counts[name] += 1
+        else:
+            name_counts[name] = 1
+    
+    return name_counts
+
+def most_often_name(students: list) -> str:
+    name_counts = name_retries(students)
+    for name in name_counts.keys():
+        if name_counts[name] == max(name_counts.values()):
+            return name
+
 students = [
     {'first_name': 'Вася'},
     {'first_name': 'Петя'},
@@ -12,7 +46,10 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Петя'},
 ]
-# ???
+name_counts = name_retries(students)
+for name, count in name_counts.items():
+    print(f'{name}: {count}')
+
 
 
 # Задание 2
@@ -26,7 +63,7 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Оля'},
 ]
-# ???
+print(f'\nСамое частое имя среди учеников: {most_often_name(students)}')
 
 
 # Задание 3
@@ -51,8 +88,9 @@ school_students = [
         {'first_name': 'Саша'},
     ],
 ]
-# ???
-
+print()
+for klass, stud_list in enumerate(school_students):
+    print(f'Самое частое имя в классе {klass+1}: {most_often_name(stud_list)}')
 
 # Задание 4
 # Для каждого класса нужно вывести количество девочек и мальчиков в нём.
@@ -72,7 +110,10 @@ is_male = {
     'Миша': True,
     'Даша': False,
 }
-# ???
+genders = gender_count(school, is_male)
+print()
+for class_name, counts in genders.items():
+    print(f'Класс {class_name}: девочек {counts["девочек"]}, мальчиков {counts["мальчиков"]}')
 
 
 # Задание 5
@@ -91,5 +132,9 @@ is_male = {
     'Олег': True,
     'Миша': True,
 }
-# ???
-
+genders = gender_count(school, is_male)
+print()
+for class_name, gndrs in genders.items():
+    for gendr, val in gndrs.items():
+        if val == max(gndrs.values()):
+            print(f'Больше всего {gendr} в классе {class_name}')
