@@ -46,10 +46,8 @@ groups = [
 ]
 
 print(f'Всего {len(groups)} группы.')
-g_count=1
-for group in groups:
-    print(f'Группа {g_count}: {len(group)} ученика.')
-    g_count+=1
+for n, group in enumerate(groups, start=1):
+    print(f'Группа №{n}: {len(group)} ученика.')
 
 # Задание 5
 # Для каждой пары учеников нужно с новой строки перечислить учеников, которые в неё входят
@@ -62,8 +60,7 @@ groups = [
     ['Оля', 'Петя', 'Гриша'],
     ['Вася', 'Маша', 'Саша', 'Женя'],
 ]
-g_count=1
-for group in groups:
+
+for n, group in enumerate(groups):
     names = ', '.join(group)
-    print(f'Группа {g_count}: {names}')
-    g_count+=1
+    print(f'Группа №{n}: {names}')

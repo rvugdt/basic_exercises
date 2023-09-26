@@ -37,6 +37,34 @@ import datetime
 import lorem
 
 
+def get_sender_ids_set(messages: list) -> set:
+    sender_ids = []
+    for msg in messages:
+        sender_id = msg['sent_by']
+        sender_ids.append(sender_id)
+    sender_ids = set(sender_ids)
+    return sender_ids
+
+def get_msg_ids_by_sender(messages: list) -> list:
+    senders = get_sender_ids_set(messages)
+    msgs_list = []
+    for msg in messages:
+        if msg['sent_by'] in senders:
+            msgs_list.append(msg['id'])
+    return(msgs_list)
+
+def get_amount_of_msgs_by_sender(messages: list) -> dict:
+    msgs = {}
+    senders = get_sender_ids_set(messages)
+    for sender in senders:
+        msg_count = len(get_msg_ids_by_sender(messages))
+        msgs[sender]=msg_count
+    return msgs
+
+def top_sender(messages: list) -> str:
+    msg_amount = get_amount_of_msgs_by_sender(messages)
+    print(msg_amount)
+
 def generate_chat_history():
     messages_amount = random.randint(200, 1000)
     users_ids = list(
@@ -67,4 +95,5 @@ def generate_chat_history():
 
 
 if __name__ == "__main__":
-    print(generate_chat_history())
+    messages = generate_chat_history()
+    top_sender_id = top_sender(messages)

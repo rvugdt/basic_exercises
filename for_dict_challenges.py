@@ -5,6 +5,8 @@
 # Маша: 2
 # Петя: 2
 
+from collections import Counter
+
 def gender_count(school: list, is_male: dict) -> dict:
     class_data = {}
     for klass in school:
@@ -21,23 +23,15 @@ def gender_count(school: list, is_male: dict) -> dict:
         class_data[class_name]={'девочек': girls_count, 'мальчиков': boys_count}
     return class_data
 
-def name_retries(students: list) -> dict:
-    name_counts = {}
+def names_counter(students: list) -> Counter:
+    names = [person['first_name'] for person in students]
+    ctr = Counter(names)
+    return ctr
 
-    for student in students:
-        name = student['first_name']
-        if name in name_counts:
-            name_counts[name] += 1
-        else:
-            name_counts[name] = 1
-    
-    return name_counts
-
-def most_often_name(students: list) -> str:
-    name_counts = name_retries(students)
-    for name in name_counts.keys():
-        if name_counts[name] == max(name_counts.values()):
-            return name
+def most_common_name(students: list) -> str:
+    ctr = names_counter(students)
+    print("Самое популярное имя:", ctr.most_common(1)[0][0])
+    return ctr.most_common(1)[0][0]
 
 students = [
     {'first_name': 'Вася'},
@@ -46,8 +40,9 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Петя'},
 ]
-name_counts = name_retries(students)
-for name, count in name_counts.items():
+
+ctr = names_counter(students)
+for name, count in ctr.items():
     print(f'{name}: {count}')
 
 
@@ -63,7 +58,8 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Оля'},
 ]
-print(f'\nСамое частое имя среди учеников: {most_often_name(students)}')
+
+print(f'\nСамое частое имя среди учеников: {most_common_name(students)}')
 
 
 # Задание 3
@@ -89,8 +85,8 @@ school_students = [
     ],
 ]
 print()
-for klass, stud_list in enumerate(school_students):
-    print(f'Самое частое имя в классе {klass+1}: {most_often_name(stud_list)}')
+for klass, stud_list in enumerate(school_students, start=1):
+    print(f'Самое частое имя в классе {klass}: {most_common_name(stud_list)}')
 
 # Задание 4
 # Для каждого класса нужно вывести количество девочек и мальчиков в нём.
